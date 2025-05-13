@@ -1,5 +1,13 @@
-function Guitar ({guitar, addToCart}) {
-    const {id, name, image, description, price} = guitar;
+import type { Guitar } from '../types'
+
+// This type is only used for this component, so it is not necessary to include it on the index.ts file.
+type GuitarProps = {
+    guitar: Guitar
+    addToCart: (item: Guitar) => void
+}
+
+function GuitarCard ({guitar, addToCart} : GuitarProps) {
+    const {name, image, description, price} = guitar;
 
     return (
         <div className="col-md-6 col-lg-4 my-4 row align-items-center">
@@ -20,4 +28,4 @@ function Guitar ({guitar, addToCart}) {
     )
 }
 
-export default Guitar;
+export default GuitarCard;

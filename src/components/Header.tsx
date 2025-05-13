@@ -1,4 +1,19 @@
-function Header ({cart, removeFromCart, increaseQuantity, decreaseQuantity, maxItems, minItems, clearCart, isCartEmpty, cartTotal, totalItems}) {
+import type { CartItem, Guitar } from "../types";
+
+type HeaderProps = {
+    cart: CartItem[]
+    removeFromCart: (id: Guitar["id"]) => void
+    increaseQuantity: (id: Guitar["id"]) => void
+    decreaseQuantity: (id: Guitar["id"]) => void
+    maxItems: number
+    minItems: number
+    clearCart: () => void
+    isCartEmpty: boolean
+    cartTotal: number
+    totalItems: number
+}
+
+function Header ({ cart, removeFromCart, increaseQuantity, decreaseQuantity, maxItems, minItems, clearCart, isCartEmpty, cartTotal, totalItems } : HeaderProps) {
 
     const logoUrl = "/img/logo.svg";
     const cartIconUrl = "/img/carrito.png"
