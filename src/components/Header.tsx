@@ -1,26 +1,34 @@
-import type { CartItem, Guitar } from "../types";
+import { ActionDispatch, useMemo } from "react";
+import type { CartItem } from "../types";
+import { CartActions } from "../reducers/cart-reducer";
 
 type HeaderProps = {
     cart: CartItem[]
-    removeFromCart: (id: Guitar["id"]) => void
-    increaseQuantity: (id: Guitar["id"]) => void
-    decreaseQuantity: (id: Guitar["id"]) => void
-    maxItems: number
-    minItems: number
-    clearCart: () => void
-    isCartEmpty: boolean
-    cartTotal: number
-    totalItems: number
+    dispatch: ActionDispatch<[action: CartActions]>
 }
 
-function Header ({ cart, removeFromCart, increaseQuantity, decreaseQuantity, maxItems, minItems, clearCart, isCartEmpty, cartTotal, totalItems } : HeaderProps) {
+function Header ({ cart, dispatch } : HeaderProps) {
 
     const logoUrl = "/img/logo.svg";
     const cartIconUrl = "/img/carrito.png"
 
     // Derived State
     // const isCartEmpty = cart.length === 0;
-    
+
+    // If using braces {} for the useMemo function, use return.
+    const isCartEmpty = useMemo(() => {
+        return cart.length === 0;
+    }, [cart]);
+
+    // Otherwise, omit braces and doesn't need the return.
+    const cartTotal = useMemo(() => 
+        cart.reduce((total, item) => total + (item.quantity * item.price), 0), 
+    [cart])
+
+    const totalItems = useMemo(() => 
+        cart.reduce((total, item) => total + (item.quantity), 0), 
+    [cart])
+
     return (
         <>
             <header className="py-5 header">
@@ -68,8 +76,7 @@ function Header ({ cart, removeFromCart, increaseQuantity, decreaseQuantity, max
                                                                 <button
                                                                     type="button"
                                                                     className="btn btn-dark"
-                                                                    onClick={() => decreaseQuantity(guitar.id)}
-                                                                    disabled={guitar.quantity === minItems}
+                                                                    onClick={() => dispatch({type: 'decrease-quantity', payload: {id: guitar.id}})}
                                                                 >
                                                                     -
                                                                 </button>
@@ -77,8 +84,7 @@ function Header ({ cart, removeFromCart, increaseQuantity, decreaseQuantity, max
                                                                 <button
                                                                     type="button"
                                                                     className="btn btn-dark"
-                                                                    onClick={() => increaseQuantity(guitar.id)}
-                                                                    disabled={guitar.quantity === maxItems}
+                                                                    onClick={() => dispatch({type: 'increase-quantity', payload: {id: guitar.id}})}
                                                                 >
                                                                     +
                                                                 </button>
@@ -87,7 +93,7 @@ function Header ({ cart, removeFromCart, increaseQuantity, decreaseQuantity, max
                                                                 <button
                                                                     className="btn btn-danger"
                                                                     type="button"
-                                                                    onClick={() => removeFromCart(guitar.id)}
+                                                                    onClick={() => dispatch({type: 'remove-from-cart', payload: {id: guitar.id}})}
                                                                 >
                                                                     X
                                                                 </button>
@@ -99,7 +105,7 @@ function Header ({ cart, removeFromCart, increaseQuantity, decreaseQuantity, max
                                             <p className="text-end">Total: <span className="fw-bold">${cartTotal}</span></p>
                                         </>
                                     )}
-                                    <button className="btn btn-dark w-100 mt-3 p-2" onClick={clearCart}>Empty cart</button>
+                                    <button className="btn btn-dark w-100 mt-3 p-2" onClick={() => dispatch({type: 'restart-cart'})}>Empty cart</button>
                                 </div>
                             </div>
                         </nav>

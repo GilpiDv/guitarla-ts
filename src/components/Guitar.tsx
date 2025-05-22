@@ -1,12 +1,14 @@
+import { ActionDispatch } from 'react';
 import type { Guitar } from '../types'
+import { CartActions } from '../reducers/cart-reducer';
 
 // This type is only used for this component, so it is not necessary to include it on the index.ts file.
 type GuitarProps = {
     guitar: Guitar
-    addToCart: (item: Guitar) => void
+    dispatch: ActionDispatch<[action: CartActions]>
 }
 
-function GuitarCard ({guitar, addToCart} : GuitarProps) {
+function GuitarCard ({guitar, dispatch} : GuitarProps) {
     const {name, image, description, price} = guitar;
 
     return (
@@ -21,7 +23,7 @@ function GuitarCard ({guitar, addToCart} : GuitarProps) {
                 <button 
                     type="button"
                     className="btn btn-dark w-100"
-                    onClick={() => addToCart(guitar)}
+                    onClick={() => dispatch({type: 'add-to-cart', payload: {item: guitar}})}
                 >Add to cart</button>
             </div>
         </div>
