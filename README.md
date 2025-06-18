@@ -48,7 +48,7 @@ A React + TypeScript e-commerce demo for a guitar store, featuring a shopping ca
 
 ## Technologies Used
 
-- [React 19](https://react.dev/)
+- [React](https://react.dev/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Vite](https://vitejs.dev/)
 - [ESLint](https://eslint.org/) (with TypeScript and React plugins)
